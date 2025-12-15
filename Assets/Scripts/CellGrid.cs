@@ -15,14 +15,16 @@ public struct Cell
 {
     public int cellIndex { get; set; }
     public int cellSize { get; set; }
+    public int cellMovementCost { get; set; }
     public Vector3 cellPosition { get; set; } // at dead center of cell
 
 
-    public Cell(int _cellIndex, int _cellSize, Vector3 _cellPosition)
+    public Cell(int _cellIndex, int _cellSize, Vector3 _cellPosition, int _cellMovementCost = 100)
     {
         cellSize = _cellSize;
         cellIndex = _cellIndex;
         cellPosition = _cellPosition;
+        cellMovementCost = _cellMovementCost;
     }
     public override string ToString() => "Cell Index: " + cellIndex;
 }
