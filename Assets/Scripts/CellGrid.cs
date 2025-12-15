@@ -75,12 +75,12 @@ public class CellGrid
         }
     }
 
-    public Cell GetCell(int x, int z)
+    public Cell? GetCell(int x, int z)
     {
         if (x >= 0 && x < gridSize && z >= 0 && z < gridSize)
             return cells[z*gridSize + x];
 
-        return default;
+        return null;
     }
 
     public Cell? GetCellAtPosition(Vector3 worldPos)
