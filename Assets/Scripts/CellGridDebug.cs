@@ -8,15 +8,13 @@ public class CellGridDebug : MonoBehaviour
     public bool showCellCenters = false;
     public Color gridColor = Color.white;
     public Color centerColor = Color.yellow;
+    public int shouldBeFalse = 2;
 
     void OnDrawGizmos()
     {
         if (!showGrid) return;
 
-        // Get the grid directly in OnDrawGizmos
         CellGridController controller = GetComponent<CellGridController>();
-        if (controller == null || controller.cellGrid == null) return;
-
         CellGrid grid = controller.cellGrid;
         Gizmos.color = gridColor;
 
