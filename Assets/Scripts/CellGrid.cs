@@ -41,6 +41,7 @@ public class CellGrid
     private Cell[] cells;
     public int gridCount;
     public int cellSize;
+    // For an easier time reading diagonals
     static readonly (int dx, int dz)[] Diagonals =
     {
         ( 1,  1),
@@ -147,7 +148,7 @@ public class CellGrid
     public Cell[] GetRectNeighbors(int x, int z, int rectRadius)
     {
         int side = rectRadius * 2 + 1;
-        int maxNeighbors = 1 << rectRadius - 1;
+        int maxNeighbors = 1 << (rectRadius - 1);
         Cell[] neighbors = new Cell[maxNeighbors];
         int count = 0;
 
