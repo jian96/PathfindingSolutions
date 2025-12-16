@@ -1,0 +1,130 @@
+\doxysection{Cell\+Grid Class Reference}
+\hypertarget{class_cell_grid}{}\label{class_cell_grid}\index{CellGrid@{CellGrid}}
+
+
+This is the most basic container in our project. It is a 1D array of cells that\textquotesingle{}s supposed to represent a 2D square world, so we can use size in our traversal formula Index to 2D position formula\+: (Size of the world)\texorpdfstring{$\ast$}{*}(Z pos) + (X pos) Currently, there are plans to use the Y dimension, so the Vector3 that represents the Unity world space position of the grid\+Origin.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_cell_grid_acc7a57010d16756c029c119a9377fcdf}{Cell\+Grid}} (int \+\_\+grid\+Size, int \+\_\+cell\+Size, Vector3 \+\_\+origin)
+\item 
+\mbox{\hyperlink{struct_cell}{Cell}}? \mbox{\hyperlink{class_cell_grid_a63ffad879517d08c41c321812821298e}{Get\+Cell}} (int x, int z)
+\item 
+\mbox{\hyperlink{struct_cell}{Cell}}? \mbox{\hyperlink{class_cell_grid_ab505402603a99d33bbec48bb595b219f}{Get\+Cell\+At\+Position}} (Vector3 world\+Pos)
+\item 
+\mbox{\hyperlink{struct_cell}{Cell}}\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{class_cell_grid_a17fea76c22d42e70d7e264352111cd1c}{Get\+Neighbors}} (int x, int z, bool include\+Diagonals=false)
+\item 
+\mbox{\hyperlink{struct_cell}{Cell}}\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{class_cell_grid_a05edf99489bb93415451f71f278f5682}{Get\+Neighbors}} (\mbox{\hyperlink{struct_cell}{Cell}} cell, bool include\+Diagonals=false)
+\begin{DoxyCompactList}\small\item\em Overload for \doxylink{class_cell_grid_a17fea76c22d42e70d7e264352111cd1c}{Get\+Neighbors()} when passed in a \doxylink{struct_cell}{Cell} object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_cell}{Cell}}\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{class_cell_grid_a9a4a03d2960ffdabc751905935c082b9}{Get\+Rect\+Neighbors}} (int x, int z, int rect\+Radius)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{class_cell_grid_a06150dba45b65ef417d77d58fd930204}{grid\+Size}}
+\item 
+Vector3 \mbox{\hyperlink{class_cell_grid_a2024ccf33ce48d15ad4cf5d825b6d593}{grid\+Origin}}
+\item 
+int \mbox{\hyperlink{class_cell_grid_a7a4c8f2288908b0dbdf47a83fb93f049}{grid\+Count}}
+\item 
+int \mbox{\hyperlink{class_cell_grid_a42555d8de33cccdb6cf829dfd0c7367f}{cell\+Size}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This is the most basic container in our project. It is a 1D array of cells that\textquotesingle{}s supposed to represent a 2D square world, so we can use size in our traversal formula Index to 2D position formula\+: (Size of the world)\texorpdfstring{$\ast$}{*}(Z pos) + (X pos) Currently, there are plans to use the Y dimension, so the Vector3 that represents the Unity world space position of the grid\+Origin. 
+
+\label{doc-constructors}
+\Hypertarget{class_cell_grid_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_cell_grid_acc7a57010d16756c029c119a9377fcdf}\index{CellGrid@{CellGrid}!CellGrid@{CellGrid}}
+\index{CellGrid@{CellGrid}!CellGrid@{CellGrid}}
+\doxysubsubsection{\texorpdfstring{CellGrid()}{CellGrid()}}
+{\footnotesize\ttfamily \label{class_cell_grid_acc7a57010d16756c029c119a9377fcdf} 
+Cell\+Grid.\+Cell\+Grid (\begin{DoxyParamCaption}\item[{int}]{\+\_\+grid\+Size}{, }\item[{int}]{\+\_\+cell\+Size}{, }\item[{Vector3}]{\+\_\+origin}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_cell_grid_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_cell_grid_a63ffad879517d08c41c321812821298e}\index{CellGrid@{CellGrid}!GetCell@{GetCell}}
+\index{GetCell@{GetCell}!CellGrid@{CellGrid}}
+\doxysubsubsection{\texorpdfstring{GetCell()}{GetCell()}}
+{\footnotesize\ttfamily \label{class_cell_grid_a63ffad879517d08c41c321812821298e} 
+\mbox{\hyperlink{struct_cell}{Cell}}? Cell\+Grid.\+Get\+Cell (\begin{DoxyParamCaption}\item[{int}]{x}{, }\item[{int}]{z}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_cell_grid_ab505402603a99d33bbec48bb595b219f}\index{CellGrid@{CellGrid}!GetCellAtPosition@{GetCellAtPosition}}
+\index{GetCellAtPosition@{GetCellAtPosition}!CellGrid@{CellGrid}}
+\doxysubsubsection{\texorpdfstring{GetCellAtPosition()}{GetCellAtPosition()}}
+{\footnotesize\ttfamily \label{class_cell_grid_ab505402603a99d33bbec48bb595b219f} 
+\mbox{\hyperlink{struct_cell}{Cell}}? Cell\+Grid.\+Get\+Cell\+At\+Position (\begin{DoxyParamCaption}\item[{Vector3}]{world\+Pos}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_cell_grid_a05edf99489bb93415451f71f278f5682}\index{CellGrid@{CellGrid}!GetNeighbors@{GetNeighbors}}
+\index{GetNeighbors@{GetNeighbors}!CellGrid@{CellGrid}}
+\doxysubsubsection{\texorpdfstring{GetNeighbors()}{GetNeighbors()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_cell_grid_a05edf99489bb93415451f71f278f5682} 
+\mbox{\hyperlink{struct_cell}{Cell}}\mbox{[}$\,$\mbox{]} Cell\+Grid.\+Get\+Neighbors (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cell}{Cell}}}]{cell}{, }\item[{bool}]{include\+Diagonals}{ = {\ttfamily false}}\end{DoxyParamCaption})}
+
+
+
+Overload for \doxylink{class_cell_grid_a17fea76c22d42e70d7e264352111cd1c}{Get\+Neighbors()} when passed in a \doxylink{struct_cell}{Cell} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cell} & \\
+\hline
+{\em include\+Diagonals} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\Hypertarget{class_cell_grid_a17fea76c22d42e70d7e264352111cd1c}\index{CellGrid@{CellGrid}!GetNeighbors@{GetNeighbors}}
+\index{GetNeighbors@{GetNeighbors}!CellGrid@{CellGrid}}
+\doxysubsubsection{\texorpdfstring{GetNeighbors()}{GetNeighbors()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_cell_grid_a17fea76c22d42e70d7e264352111cd1c} 
+\mbox{\hyperlink{struct_cell}{Cell}}\mbox{[}$\,$\mbox{]} Cell\+Grid.\+Get\+Neighbors (\begin{DoxyParamCaption}\item[{int}]{x}{, }\item[{int}]{z}{, }\item[{bool}]{include\+Diagonals}{ = {\ttfamily false}}\end{DoxyParamCaption})}
+
+\Hypertarget{class_cell_grid_a9a4a03d2960ffdabc751905935c082b9}\index{CellGrid@{CellGrid}!GetRectNeighbors@{GetRectNeighbors}}
+\index{GetRectNeighbors@{GetRectNeighbors}!CellGrid@{CellGrid}}
+\doxysubsubsection{\texorpdfstring{GetRectNeighbors()}{GetRectNeighbors()}}
+{\footnotesize\ttfamily \label{class_cell_grid_a9a4a03d2960ffdabc751905935c082b9} 
+\mbox{\hyperlink{struct_cell}{Cell}}\mbox{[}$\,$\mbox{]} Cell\+Grid.\+Get\+Rect\+Neighbors (\begin{DoxyParamCaption}\item[{int}]{x}{, }\item[{int}]{z}{, }\item[{int}]{rect\+Radius}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{class_cell_grid_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_cell_grid_a42555d8de33cccdb6cf829dfd0c7367f}\index{CellGrid@{CellGrid}!cellSize@{cellSize}}
+\index{cellSize@{cellSize}!CellGrid@{CellGrid}}
+\doxysubsubsection{\texorpdfstring{cellSize}{cellSize}}
+{\footnotesize\ttfamily \label{class_cell_grid_a42555d8de33cccdb6cf829dfd0c7367f} 
+int Cell\+Grid.\+cell\+Size}
+
+\Hypertarget{class_cell_grid_a7a4c8f2288908b0dbdf47a83fb93f049}\index{CellGrid@{CellGrid}!gridCount@{gridCount}}
+\index{gridCount@{gridCount}!CellGrid@{CellGrid}}
+\doxysubsubsection{\texorpdfstring{gridCount}{gridCount}}
+{\footnotesize\ttfamily \label{class_cell_grid_a7a4c8f2288908b0dbdf47a83fb93f049} 
+int Cell\+Grid.\+grid\+Count}
+
+\Hypertarget{class_cell_grid_a2024ccf33ce48d15ad4cf5d825b6d593}\index{CellGrid@{CellGrid}!gridOrigin@{gridOrigin}}
+\index{gridOrigin@{gridOrigin}!CellGrid@{CellGrid}}
+\doxysubsubsection{\texorpdfstring{gridOrigin}{gridOrigin}}
+{\footnotesize\ttfamily \label{class_cell_grid_a2024ccf33ce48d15ad4cf5d825b6d593} 
+Vector3 Cell\+Grid.\+grid\+Origin}
+
+\Hypertarget{class_cell_grid_a06150dba45b65ef417d77d58fd930204}\index{CellGrid@{CellGrid}!gridSize@{gridSize}}
+\index{gridSize@{gridSize}!CellGrid@{CellGrid}}
+\doxysubsubsection{\texorpdfstring{gridSize}{gridSize}}
+{\footnotesize\ttfamily \label{class_cell_grid_a06150dba45b65ef417d77d58fd930204} 
+int Cell\+Grid.\+grid\+Size}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+D\+:/\+Unity/\+Projects/\+Pathfinding\+Solutions/\+Assets/\+Scripts/\mbox{\hyperlink{_cell_grid_8cs}{Cell\+Grid.\+cs}}\end{DoxyCompactItemize}

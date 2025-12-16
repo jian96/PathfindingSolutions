@@ -1,0 +1,9 @@
+\doxysection{D\+:/\+Unity/\+Projects/\+Pathfinding\+Solutions/\+Assets/\+Scripts/\+Cell\+Grid.cs File Reference}
+\hypertarget{_cell_grid_8cs}{}\label{_cell_grid_8cs}\index{D:/Unity/Projects/PathfindingSolutions/Assets/Scripts/CellGrid.cs@{D:/Unity/Projects/PathfindingSolutions/Assets/Scripts/CellGrid.cs}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_cell}{Cell}}
+\begin{DoxyCompactList}\small\item\em \doxylink{struct_cell}{Cell} is the most basic unit in our project cell\+Index\+: Number identifer for cell cell\+Size\+: Size of the cell, relative to the Unity world space cell\+Position\+: Position of the cell, relative to the Unity world space. Represents dead center of the cell Currently, there are plans to consider the upward and downward directions -\/ this is the reason it\textquotesingle{}s a Vector3. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_cell_grid}{Cell\+Grid}}
+\begin{DoxyCompactList}\small\item\em This is the most basic container in our project. It is a 1D array of cells that\textquotesingle{}s supposed to represent a 2D square world, so we can use size in our traversal formula Index to 2D position formula\+: (Size of the world)\texorpdfstring{$\ast$}{*}(Z pos) + (X pos) Currently, there are plans to use the Y dimension, so the Vector3 that represents the Unity world space position of the grid\+Origin. \end{DoxyCompactList}\end{DoxyCompactItemize}

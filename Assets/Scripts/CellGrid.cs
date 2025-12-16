@@ -36,17 +36,22 @@ public struct Cell
 /// Currently, there are plans to use the Y dimension, so the Vector3 that represents the Unity world space position of the gridOrigin
 /// </summary>
 
+// NEED TO IMPLEMENT
+// 1. IReadOnlyCollection<Grid> on CellGrid  
+//  a. add count property
+//  b. add enumerator
+//  c. i hate linq
+// 2. turn Cell[] cells to using IReadOnlyList<T> 
 public class CellGrid
 {
     public int gridSize;
     public Vector3 gridOrigin;
-    private Cell[] cells;
-    public int gridCount;
+    public Cell[] cells { get;}
+    public int gridCount; // this needs to be a property (method(not a method by convention(but actually a method under the hood))) - check ICollection<T> interface 
     public int cellSize;
     // For an easier time reading diagonals
     static readonly (int dx, int dz)[] Diagonals =
     {
-        ( 1,  1),
         (-1,  1),
         ( 1, -1),
         (-1, -1),
