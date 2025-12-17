@@ -52,6 +52,7 @@ public class CellGrid
     // For an easier time reading diagonals
     static readonly (int dx, int dz)[] Diagonals =
     {
+		( 1,  1),
         (-1,  1),
         ( 1, -1),
         (-1, -1),
