@@ -102,10 +102,10 @@ public class PriorityQueue
 
 }
 
-public class IntegrationField : MonoBehaviour // Dijkstra map
+public class IntegrationField // Dijkstra map
 {
     private CellGrid cellGrid;
-    private int[] costs;
+    public int[] costs { get; private set; } 
 
     public IntegrationField(CellGrid _cellGrid)
     {
@@ -124,19 +124,51 @@ public class IntegrationField : MonoBehaviour // Dijkstra map
     // 4.	Consider the neighbors as new origins
     public void populateCosts(int targetX, int targetZ)
     {
+        // reset cpsts
         for (int i = 0; i < costs.Length; i++)
             costs[i] = int.MaxValue;
+        
+        int gridSize = cellGrid.gridSize; // readability
+        int targetCellIndex = targetZ * gridSize + targetX; // continue
 
-        int targetCellIndex = targetZ * cellGrid.gridSize + targetX; // continue
         PriorityQueue pq = new(cellGrid.gridCount);
-        pq.Enqueue((1, 1));
-        //while (pq.Count() > 0)
-        //{
-        //    (int, int) entry = pq.Dequeue();
-            //if (cellGrid.cells[targetCellIndex + 1].cellMovementCost < 255) neighbors[count++] = cells[Index(x, z + 1)];
-            //if (z - 1 >= 0) neighbors[count++] = cells[Index(x, z - 1)];
-            //if (x + 1 < gridSize) neighbors[count++] = cells[Index(x + 1, z)];
-            //if (x - 1 >= 0) neighbors[count++] = cells[Index(x - 1, z)];
+        costs[targetCellIndex] = 0;
+        pq.Enqueue((targetCellIndex, 0));   // origin
+        while (pq.Count > 0)
+        {
+            var (currentIndex, currentCost) = pq.Dequeue();
+
+            // ignore outdated entries
+            if (currentCost > costs[currentIndex])
+                continue;
+
+            int x = currentIndex % gridSize;
+            int z = currentIndex / gridSize;
+
+            // visit neighbors
+            TryRelax(x, z + 1);
+            TryRelax(x, z - 1);
+            TryRelax(x + 1, z);
+            TryRelax(x - 1, z);
+
+            void TryRelax(int nx, int nz)
+            {
+                if (nx < 0 || nz < 0 || nx >= gridSize || nz >= gridSize)
+                    return;
+
+                int nIndex = nz * gridSize + nx;
+                int moveCost = cellGrid.cells[nIndex].cellMovementCost;
+
+                if (moveCost >= 255) return; // blocked
+
+                int newCost = currentCost + moveCost;
+
+                if (newCost < costs[nIndex])
+                {
+                    costs[nIndex] = newCost;
+                    pq.Enqueue((nIndex, newCost));
+                }
+            }
         }
     }
 

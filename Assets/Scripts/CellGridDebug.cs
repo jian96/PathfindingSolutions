@@ -2,6 +2,14 @@ using UnityEngine;
 
 public class CellGridDebug : MonoBehaviour
 {
+    [Header("Dijkstra Map Debug")]
+    public bool showDijkstraMap = true;
+    public int dijkstraTargetX = 5;
+    public int dijkstraTargetZ = 5;
+    public int maxDebugCost = 50;
+    public Color dijkstraLow = Color.cyan;
+    public Color dijkstraHigh = Color.magenta;
+
     [Header("Visualization Settings")]
     public bool showGrid = true;
     public bool showIndices = false;
@@ -33,7 +41,66 @@ public class CellGridDebug : MonoBehaviour
         {
             DrawRectSelection(grid);
         }
+
+        if (showDijkstraMap)
+        {
+            DrawDijkstraMap(grid, controller);
+        }
+
     }
+
+    void DrawDijkstraMap(CellGrid grid, CellGridController controller)
+    {
+        if (dijkstraTargetX < 0 || dijkstraTargetX >= grid.gridSize ||
+            dijkstraTargetZ < 0 || dijkstraTargetZ >= grid.gridSize)
+            return;
+
+        // main
+        controller.integrationField.populateCosts(dijkstraTargetX, dijkstraTargetZ);
+        int[] costs = controller.GetCosts();
+
+        for (int z = 0; z < grid.gridSize; z++)
+        {
+            for (int x = 0; x < grid.gridSize; x++)
+            {
+                Cell? cell = grid.GetCell(x, z);
+                if (!cell.HasValue) continue;
+
+                int cost = costs[cell.Value.cellIndex];
+                if (cost == int.MaxValue) continue;
+
+                float t = Mathf.Clamp01(cost / (float)maxDebugCost);
+                Gizmos.color = Color.Lerp(dijkstraLow, dijkstraHigh, t);
+
+                Gizmos.DrawCube(
+                    cell.Value.cellPosition,
+                    new Vector3(grid.cellSize * 0.9f, 0.1f, grid.cellSize * 0.9f)
+                );
+
+#if UNITY_EDITOR
+                UnityEditor.Handles.Label(
+                    cell.Value.cellPosition + Vector3.up * 0.2f,
+                    cost.ToString(),
+                    new GUIStyle()
+                    {
+                        normal = new GUIStyleState() { textColor = Color.white },
+                        fontSize = 9,
+                        alignment = TextAnchor.MiddleCenter
+                    }
+                );
+#endif
+            }
+        }
+
+        // Draw target
+        Cell? targetCell = grid.GetCell(dijkstraTargetX, dijkstraTargetZ);
+        if (targetCell.HasValue)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(targetCell.Value.cellPosition + Vector3.up * 0.15f, 0.15f);
+        }
+    }
+
 
     void DrawGrid(CellGrid grid)
     {
