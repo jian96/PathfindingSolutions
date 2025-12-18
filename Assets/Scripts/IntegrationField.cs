@@ -1,65 +1,21 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
+using System.Linq;
+using System;
 
 // Pre-edit to work with the pathfinding solution, e.g. Debug.Log and Vector objects
 // This version works as a separate C# class
 public class PriorityQueue
 {
     public (int value, int prio)[] prioqueue;
-    public int _count; // TODO: make this a property later
+    public int _count;
+    public int Count => _count;
 
-    /* 
-	add (int val){
-	int emptyspotindex = pq.getLength
-	pq[emptyspotindex] = val
-	while (pq[(emptyspotindex-1)/2] != null && pq[(emptyspotindex-1)/2] > val)
-	pq[emptyspotindex] = pq[(emptyspotindex-1)/2]
-	pq[(emptyspotindex-1)/2] = val
-	emptyspotindex = (emptyspotindex-1)/2
-	 */
-
-    public static void Main()
-    {
-        Console.WriteLine("Creating PQ");
-        PriorityQueue pq = new(50);
-        pq.toString(0);
-        Console.WriteLine("Adding 10-larger than before elements\n");
-        var data = new List<(int dx, int dz)> { (0, 0) };
-        for (int i = 1; i < 10; i++)
-        {
-            // Access the previous element (data[i-1]) and increment its fields
-            int nx = data[i - 1].dx + 2;
-            int nz = data[i - 1].dz + 2;
-            (int, int) n = (nx, nz);
-            data.Add(n);
-            // for defaulted identifiers
-            // data[i].Item1 = data[i-1].Item1 + 1;
-            // data[i].Item2 = data[i-1].Item2 + 1;
-        }
-
-        for (int i = 0; i < data.Count(); i++)
-        {
-            Console.WriteLine("{0}", data[i].ToString());
-        }
-
-
-
-
-        for (int i = 0; i < data.Count(); i++)
-        {
-            (int, int) curdata = data[i];
-            pq.Enqueue(data[i]);
-        }
-
-        pq.toString(1);
-        var datatwo = (1, 1);
-        pq.Enqueue(datatwo);
-        Console.WriteLine("Adding a low member");
-        pq.toString(1);
-
-    }
-
+    /// <summary>
+    /// Constructor that takes in max size for instance, e.g. it should be the PQ's customer's worldsize
+    /// </summary>
+    /// <param name="maxSize"></param>
     public PriorityQueue(int maxSize)
     {
         _count = 0;
@@ -100,57 +56,88 @@ public class PriorityQueue
         _count++;
     }
 
-    public void toString(int displayContents)
+    public (int, int) Dequeue()
     {
-        Console.WriteLine("Size is {0}\n" + "Max size is {1}\n", _count, prioqueue.Length);
-        if (Convert.ToBoolean(displayContents))
+        (int, int) retval = prioqueue[0];
+        int prio = prioqueue[--_count].value;
+        int currentIndex = 0;
+        int leftChildIndex = currentIndex * 2 + 1;
+        int rightChildIndex = currentIndex * 2 + 2;
+        prioqueue[0] = prioqueue[_count];
+        while (leftChildIndex % 2 == 1 && (prioqueue[leftChildIndex].value < prio || (rightChildIndex % 2 == 0 && prioqueue[rightChildIndex].value < prio)))
         {
-            Console.WriteLine("Printing Contents:\n");
-            for (int i = 0; i < _count; i++)
+            if (rightChildIndex % 2 == 1 || prioqueue[leftChildIndex].value < prioqueue[rightChildIndex].value)
             {
-                Console.WriteLine("{0}", prioqueue[i]);
+                prioqueue[currentIndex] = prioqueue[leftChildIndex];
+                currentIndex = leftChildIndex;
             }
+            else
+            {
+                prioqueue[currentIndex] = prioqueue[rightChildIndex];
+                currentIndex = rightChildIndex;
+            }
+            leftChildIndex = currentIndex * 2 + 1;
+            rightChildIndex = currentIndex * 2 + 2;
         }
+        prioqueue[currentIndex].value = prio;
+        return retval;
+    }
+
+    /// <summary>
+    /// ToString() override that returns info
+    /// </summary>
+    /// <returns>A formatted string containing current size, max size, and list of current content</returns>
+    public override string ToString()
+    {
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine($"Size: {_count}, Max: {prioqueue.Length}");
+
+        for (int i = 0; i < _count; i++)
+        {
+            sb.AppendLine($"[{i}]: {prioqueue[i]}");
+        }
+
+        return sb.ToString();
     }
 
 }
 
 public class IntegrationField : MonoBehaviour // Dijkstra map
 {
-	private CellGrid cellGrid;
-	private int[] costs;
+    private CellGrid cellGrid;
+    private int[] costs;
 
-	public IntegrationField(CellGrid _cellGrid)
-	{
-		cellGrid = _cellGrid;
-		costs = new int[cellGrid.gridCount];
-	}
-	
-	// 1.	Acknowledge origin
-	// 2.	Find origin eligible neighbors - add them all to prio queue (first iteration should have 4 assuming plain grid, each overlap should be removed due to dequeuing)
-	// 3.	See if VISITED or NOT VISITED
-	//	3a. if VISITED: skip
-	//  3b. if NOT VISITED: SET neighborConnectCost = currentTraverseToCost + neighborMovementCost
-	//		IMPORTANT: for edge cases where an expensive path, e.g. crossing a 50-points bridge vs walking around
-	//				   graph distance, NOT spatial distance - don't forget this for graphs
-	//  3bi.set neighbor's 
-	// 4.	Consider the neighbors as new origins
-	public void populateCosts(int targetX, int targetZ)
-	{
-		for (int i = 0; i < costs.Length; i++)
-		costs[i] = int.MaxValue;
+    public IntegrationField(CellGrid _cellGrid)
+    {
+        cellGrid = _cellGrid;
+        costs = new int[cellGrid.gridCount];
+    }
+
+    // 1.	Acknowledge origin
+    // 2.	Find origin eligible neighbors - add them all to prio queue (first iteration should have 4 assuming plain grid, each overlap should be removed due to dequeuing)
+    // 3.	See if VISITED or NOT VISITED
+    //	3a. if VISITED: skip
+    //  3b. if NOT VISITED: SET neighborConnectCost = currentTraverseToCost + neighborMovementCost
+    //		IMPORTANT: for edge cases where an expensive path, e.g. crossing a 50-points bridge vs walking around
+    //				   graph distance, NOT spatial distance - don't forget this for graphs
+    //  3bi.set neighbor's 
+    // 4.	Consider the neighbors as new origins
+    public void populateCosts(int targetX, int targetZ)
+    {
+        for (int i = 0; i < costs.Length; i++)
+            costs[i] = int.MaxValue;
 
         int targetCellIndex = targetZ * cellGrid.gridSize + targetX; // continue
-		PriorityQueue pq = new(cellGrid.gridCount);
-        pq.Enqueue((1,1));
-        while (pq.Count > 0) 
-		{
-            int currentCellIndex = pq.Dequeue();
-            if (cellGrid.cells[targetCellIndex + 1].cellMovementCost < 255 ) neighbors[count++] = cells[Index(x, z + 1)];
-            if (z - 1 >= 0) neighbors[count++] = cells[Index(x, z - 1)];
-            if (x + 1 < gridSize) neighbors[count++] = cells[Index(x + 1, z)];
-            if (x - 1 >= 0) neighbors[count++] = cells[Index(x - 1, z)];
+        PriorityQueue pq = new(cellGrid.gridCount);
+        pq.Enqueue((1, 1));
+        //while (pq.Count() > 0)
+        //{
+        //    (int, int) entry = pq.Dequeue();
+            //if (cellGrid.cells[targetCellIndex + 1].cellMovementCost < 255) neighbors[count++] = cells[Index(x, z + 1)];
+            //if (z - 1 >= 0) neighbors[count++] = cells[Index(x, z - 1)];
+            //if (x + 1 < gridSize) neighbors[count++] = cells[Index(x + 1, z)];
+            //if (x - 1 >= 0) neighbors[count++] = cells[Index(x - 1, z)];
         }
-	}
+    }
 
 }
