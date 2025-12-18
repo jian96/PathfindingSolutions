@@ -59,12 +59,14 @@ public class PriorityQueue
     public (int, int) Dequeue()
     {
         (int, int) retval = prioqueue[0];
-        int prio = prioqueue[--_count].value;
+        (int cellIndex, int cost) lastElement = prioqueue[--_count];
+
         int currentIndex = 0;
         int leftChildIndex = currentIndex * 2 + 1;
         int rightChildIndex = currentIndex * 2 + 2;
-        prioqueue[0] = prioqueue[_count];
-        while (leftChildIndex % 2 == 1 && (prioqueue[leftChildIndex].value < prio || (rightChildIndex % 2 == 0 && prioqueue[rightChildIndex].value < prio)))
+
+        prioqueue[0] = lastElement;
+        while (leftChildIndex % 2 == 1 && (prioqueue[leftChildIndex].value < lastElement.cost || (rightChildIndex % 2 == 0 && prioqueue[rightChildIndex].value < lastElement.cost)))
         {
             if (rightChildIndex % 2 == 1 || prioqueue[leftChildIndex].value < prioqueue[rightChildIndex].value)
             {
@@ -79,7 +81,7 @@ public class PriorityQueue
             leftChildIndex = currentIndex * 2 + 1;
             rightChildIndex = currentIndex * 2 + 2;
         }
-        prioqueue[currentIndex].value = prio;
+        prioqueue[currentIndex] = lastElement;
         return retval;
     }
 
@@ -105,7 +107,7 @@ public class PriorityQueue
 public class IntegrationField // Dijkstra map
 {
     private CellGrid cellGrid;
-    public int[] costs { get; private set; } 
+    public int[] costs { get; private set; }
 
     public IntegrationField(CellGrid _cellGrid)
     {
@@ -133,10 +135,10 @@ public class IntegrationField // Dijkstra map
 
         PriorityQueue pq = new(cellGrid.gridCount);
         costs[targetCellIndex] = 0;
-        pq.Enqueue((targetCellIndex, 0));   // origin
+        pq.Enqueue((0, targetCellIndex));   // origin
         while (pq.Count > 0)
         {
-            var (currentIndex, currentCost) = pq.Dequeue();
+            var (currentCost, currentIndex) = pq.Dequeue();
 
             // ignore outdated entries
             if (currentCost > costs[currentIndex])
@@ -166,7 +168,7 @@ public class IntegrationField // Dijkstra map
                 if (newCost < costs[nIndex])
                 {
                     costs[nIndex] = newCost;
-                    pq.Enqueue((nIndex, newCost));
+                    pq.Enqueue((newCost, nIndex));
                 }
             }
         }

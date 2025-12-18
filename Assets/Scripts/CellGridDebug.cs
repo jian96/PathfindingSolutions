@@ -6,7 +6,7 @@ public class CellGridDebug : MonoBehaviour
     public bool showDijkstraMap = true;
     public int dijkstraTargetX = 5;
     public int dijkstraTargetZ = 5;
-    public int maxDebugCost = 50;
+    public int maxDebugCost = 256;
     public Color dijkstraLow = Color.cyan;
     public Color dijkstraHigh = Color.magenta;
 
